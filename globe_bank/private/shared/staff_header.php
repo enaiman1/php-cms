@@ -1,24 +1,27 @@
 <?php
-if(!isset($page_title)) {$page_title = 'Staff Area';}
+if (!isset($page_title)) {
+  $page_title = 'Staff Area';
+}
 ?>
 
 <!doctype html>
 
 <html lang="en">
-  <head>
-    <title>GBI - <?= $page_title; ?> </title>
-    <meta charset="utf-8">
-    <link rel="stylesheet" media="all" type="text/css" href="./stylesheets/staff.css" />
 
-  </head>
+<head>
+  <title>GBI - <?= $page_title; ?> </title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" media="all" type="text/css" href="<?= url_for('/stylesheets/staff.css'); ?>" />
 
-  <body>
-    <header>
-      <h1>GBI Staff Area</h1>
-    </header>
+</head>
 
-    <navigation>
-      <ul>
-        <li><a href="index.php">Menu</a></li>
-      </ul>
-    </navigation>
+<body>
+  <header>
+    <h1>GBI Staff Area</h1>
+  </header>
+
+  <navigation>
+    <ul>
+      <li><a href="<?= url_for('/staff/index.php'); ?>">Menu</a></li>
+    </ul>
+  </navigation>
