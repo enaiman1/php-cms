@@ -21,5 +21,30 @@ function url_for($script_path) {
   function h($string="") {
     return htmlspecialchars($string);
   }
+
+  function error_404() {
+    header($_SERVER['SERVER_PROTOCOL'] . " 404 NOT Found");
+    exit();
+  }
+  function error_500() {
+    header($_SERVER['SERVER_PROTOCOL'] . " 500 Internal Server Error");
+    exit();
+  }
   
+  // 
+  function redirect_to($location) {
+    header("Location: " . $location);
+    exit;
+  }
+
+  // if the condition equals a POST REQUEST, this function will run
+  function is_post_request() {
+    return $_SERVER['REQUEST_METHOD'] == 'POST';
+  }
+
+// if the condition equals a GET REQUEST, this function will run
+function is_get_request() {
+  return $_SERVER['REQUEST_METHOD'] == 'GET';
+}
+
 ?>
