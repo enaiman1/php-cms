@@ -7,7 +7,7 @@
 $id = $_GET['id'] ?? '1'; 
 
 // calls function to add htmlspecialchars to id
-echo h($id);
+// echo h($id);
 
 ?>
 

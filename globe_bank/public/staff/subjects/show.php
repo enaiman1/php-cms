@@ -8,8 +8,7 @@
 //php > 7.0
 $id = $_GET['id'] ?? '1'; 
 
-// calls function to add htmlspecialchars to id
-echo h($id);
+$subject = find_subject_by_id($id);
 
 ?>
 
@@ -18,11 +17,26 @@ echo h($id);
 
 <div id="content">
 
-  <a class="back-link" href="<?= url_for('/staff/subjects/index.php'); ?>">&laquo; Back to List</a>
+  <a class="back-link" href="<?php echo url_for('/staff/subjects/index.php'); ?>">&laquo; Back to List</a>
 
   <div class="subject show">
 
-    Subject ID: <?= h($id); ?>
+    <h1>Subject: <?= h($subject['menu_name']); ?></h1>
+
+    <div class="attributes">
+      <dl>
+        <dt>Menu Name</dt>
+        <dd><?= h($subject['menu_name']); ?></dd>
+      </dl>
+      <dl>
+        <dt>Position</dt>
+        <dd><?= h($subject['position']); ?></dd>
+      </dl>
+      <dl>
+        <dt>Visible</dt>
+        <dd><?= $subject['visible'] == '1' ? 'true' : 'false'; ?></dd>
+      </dl>
+    </div>
 
   </div>
 
