@@ -13,20 +13,6 @@ function find_all_subjects()
   return $result;
 }
 
-
-// This function create a query to get all pages from the DB
-function find_all_pages()
-{
-  global $db;
-
-  $sql = "SELECT * FROM pages ";
-  $sql .= "ORDER BY subject_id ASC, position ASC";
-  // echo $sql;
-  $result = mysqli_query($db, $sql);
-  confirm_result_set($result);
-  return $result;
-}
-
 // find a subject by id
 function find_subject_by_id($id)
 {
@@ -109,4 +95,103 @@ function delete_subject($id)
       exit;
     }
   
+}
+
+// This function create a query to delete a pages from it's id
+// ---------Query Functions for Pages -------------
+
+// This function create a query to get all pages from the DB
+function find_all_pages()
+{
+  global $db;
+
+  $sql = "SELECT * FROM pages ";
+  $sql .= "ORDER BY subject_id ASC, position ASC";
+  // echo $sql;
+  $result = mysqli_query($db, $sql);
+  confirm_result_set($result);
+  return $result;
+}
+// This function create a query to find a single pages by its id
+function find_page_by_id($id) {
+  global $db;
+
+  $sql = "SELECT * FROM pages ";
+  $sql .= "WHERE id='" . $id . "'";
+  $result = mysqli_query($db, $sql);
+  confirm_result_set($result);
+  $page = mysqli_fetch_assoc($result);
+  mysqli_free_result($result);
+  return $page; // returns an assoc. array
+}
+
+// This function create a query to create a new page 
+function insert_page($page) {
+  global $db;
+
+  $sql = "INSERT INTO pages ";
+  $sql .= "(subject_id, menu_name, position, visible, content) ";
+  $sql .= "VALUES (";
+  $sql .= "'" . $page['subject_id'] . "',";
+  $sql .= "'" . $page['menu_name'] . "',";
+  $sql .= "'" . $page['position'] . "',";
+  $sql .= "'" . $page['visible'] . "',";
+  $sql .= "'" . $page['content'] . "'";
+  $sql .= ")";
+  $result = mysqli_query($db, $sql);
+  // For INSERT statements, $result is true/false
+  if($result) {
+    return true;
+  } else {
+    // INSERT failed
+    echo mysqli_error($db);
+    db_disconnect($db);
+    exit;
+  }
+}
+
+// This function create a query to update a page by its id
+function update_page($page) {
+  global $db;
+
+  $sql = "UPDATE pages SET ";
+  $sql .= "subject_id='" . $page['subject_id'] . "', ";
+  $sql .= "menu_name='" . $page['menu_name'] . "', ";
+  $sql .= "position='" . $page['position'] . "', ";
+  $sql .= "visible='" . $page['visible'] . "', ";
+  $sql .= "content='" . $page['content'] . "' ";
+  $sql .= "WHERE id='" . $page['id'] . "' ";
+  $sql .= "LIMIT 1";
+
+  $result = mysqli_query($db, $sql);
+  // For UPDATE statements, $result is true/false
+  if($result) {
+    return true;
+  } else {
+    // UPDATE failed
+    echo mysqli_error($db);
+    db_disconnect($db);
+    exit;
+  }
+
+}
+
+// This function create a query to delete a pages from it's id
+function delete_page($id) {
+  global $db;
+
+  $sql = "DELETE FROM pages ";
+  $sql .= "WHERE id='" . $id . "' ";
+  $sql .= "LIMIT 1";
+  $result = mysqli_query($db, $sql);
+
+  // For DELETE statements, $result is true/false
+  if($result) {
+    return true;
+  } else {
+    // DELETE failed
+    echo mysqli_error($db);
+    db_disconnect($db);
+    exit;
+  }
 }
