@@ -1,8 +1,8 @@
 <?php
 
-
 require_once('../../../private/initialize.php');
 
+//make sure subject has an id
 if(!isset($_GET['id'])) {
   redirect_to(url_for('/staff/subjects/index.php'));
 }
@@ -25,12 +25,16 @@ if(is_post_request()) {
 
   $subject = find_subject_by_id($id);
 
+  $subject_set = find_all_subjects();
+  $subject_count = mysqli_num_rows($subject_set);
+  mysqli_free_result($subject_set);
+
 }
 
 ?>
 
-<?=$page_title = 'Edit Subject'; ?>
-<?=include(SHARED_PATH . '/staff_header.php'); ?>
+<?php $page_title = 'Edit Subject'; ?>
+<?php include(SHARED_PATH . '/staff_header.php'); ?>
 
 <div id="content">
 
@@ -39,7 +43,7 @@ if(is_post_request()) {
   <div class="subject edit">
     <h1>Edit Subject</h1>
 
-    <form action="<?= url_for('/staff/subjects/edit.php?=' . h(u($id))); ?>" method="post">
+    <form action="<?= url_for('/staff/subjects/edit.php?id=' . h(u($id))); ?>" method="post">
       <dl>
         <dt>Menu Name</dt>
         <dd><input type="text" name="menu_name" value="<?= h($subject['menu_name']); ?>" /></dd>
@@ -48,7 +52,15 @@ if(is_post_request()) {
         <dt>Position</dt>
         <dd>
           <select name="position">
-            <option value="1" <?php if($subject['position'] == "1") {echo "selected"; } ?>>1</option>
+          <?php
+            for($i=1; $i <= $subject_count; $i++) {
+              echo "<option value=\"{$i}\"";
+              if($subject["position"] == $i) {
+                echo " selected";
+              }
+              echo ">{$i}</option>";
+            }
+          ?>
           </select>
         </dd>
       </dl>
@@ -56,7 +68,7 @@ if(is_post_request()) {
         <dt>Visible</dt>
         <dd>
           <input type="hidden" name="visible" value="0" />
-          <input type="checkbox" name="visible" value="1" <?php if($subject['visible'] == "1") { echo "selected"; } ?>  />
+          <input type="checkbox" name="visible" value="1"<?php if($subject['visible'] == "1") { echo " checked"; } ?> />
         </dd>
       </dl>
       <div id="operations">
@@ -68,8 +80,4 @@ if(is_post_request()) {
 
 </div>
 
-<?= include(SHARED_PATH . '/staff_footer.php'); ?>
-
-
-
-
+<?php include(SHARED_PATH . '/staff_footer.php'); ?>
