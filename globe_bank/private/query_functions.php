@@ -191,9 +191,6 @@ function validate_page($page) {
   return $errors;
 }
 
-
-
-
 // This function create a query to get all pages from the DB
 function find_all_pages()
 {
@@ -298,3 +295,18 @@ function delete_page($id) {
     exit;
   }
 }
+
+//this function create a query to find page based on subject id
+function find_pages_by_subject_id($subject_id) {
+  global $db;
+
+  $sql = "SELECT * FROM pages ";
+  $sql .= "WHERE subject_id='" . db_escape($db, $subject_id) . "' ";
+  $sql .= "ORDER BY position ASC";
+  $result = mysqli_query($db, $sql);
+  confirm_result_set($result);
+ 
+  return $result; // returns all result set
+}
+
+?>
