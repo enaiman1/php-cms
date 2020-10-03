@@ -33,11 +33,16 @@ function validate_subject($subject) {
 }
 
 // This function create a query to get all subjects from the DB
-function find_all_subjects()
+function find_all_subjects($options=[])
 {
   global $db;
 
+  $visible = $options['visible'] ?? false;
+
   $sql = "SELECT * FROM subjects ";
+  if($visible) {
+    $sql .= "WHERE visible = true ";
+  }
   $sql .= "ORDER BY position ASC";
   // echo $sql;
   $result = mysqli_query($db, $sql);
@@ -46,12 +51,17 @@ function find_all_subjects()
 }
 
 // find a subject by id
-function find_subject_by_id($id)
+function find_subject_by_id($id, $options=[])
 {
   global $db;
 
+  $visible = $options['visible'] ?? false;
+
   $sql = "SELECT * FROM subjects ";
-  $sql .= "WHERE id='" . db_escape($db, $id)  . "'";
+  $sql .= "WHERE id='" . db_escape($db, $id)  . "' ";
+  if($visible) {
+    $sql .= "AND visible = true";
+  }
   $result = mysqli_query($db, $sql);
   confirm_result_set($result);
   $subject = mysqli_fetch_assoc($result);
@@ -204,11 +214,16 @@ function find_all_pages()
   return $result;
 }
 // This function create a query to find a single pages by its id
-function find_page_by_id($id) {
+function find_page_by_id($id, $options=[]) {
   global $db;
+
+  $visible = $options['visible'] ?? false;
 
   $sql = "SELECT * FROM pages ";
   $sql .= "WHERE id='" . db_escape($db, $id) . "'";
+  if($visible){
+    $sql .= "AND visible = true";
+  }
   $result = mysqli_query($db, $sql);
   confirm_result_set($result);
   $page = mysqli_fetch_assoc($result);
@@ -297,11 +312,16 @@ function delete_page($id) {
 }
 
 //this function create a query to find page based on subject id
-function find_pages_by_subject_id($subject_id) {
+function find_pages_by_subject_id($subject_id, $options=[]) {
   global $db;
+
+  $visible = $options['visible'] ?? false;
 
   $sql = "SELECT * FROM pages ";
   $sql .= "WHERE subject_id='" . db_escape($db, $subject_id) . "' ";
+  if($visible) {
+    $sql .= "AND visible = true ";
+  }
   $sql .= "ORDER BY position ASC";
   $result = mysqli_query($db, $sql);
   confirm_result_set($result);

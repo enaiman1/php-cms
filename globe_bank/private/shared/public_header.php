@@ -2,7 +2,12 @@
 
 <html lang="en">
   <head>
-    <title>Globe Bank <?php if(isset($page_title)) { echo '- ' . h($page_title); } ?></title>
+    <title>Globe Bank <?php if(isset($page_title)) { echo '- ' . h($page_title); } 
+    // if in preview mode, the title will state preview
+    if(isset($preview) && $preview) {echo ' [PREVIEW]';}
+    ?>
+  
+  </title>
     <meta charset="utf-8">
     <link rel="stylesheet" media="all" href="<?= url_for('/stylesheets/public.css'); ?>" />
   </head>
