@@ -30,6 +30,7 @@ require_once('functions.php');
 require_once('database.php');
 require_once('query_functions.php');
 require_once('validation_functions.php');
+require_once('auth_functions.php');
 
 // Any time a page loads this file, it will initiate connection to db
 $db = db_connect();

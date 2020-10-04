@@ -1,6 +1,7 @@
 <?php
 
 require_once('../../../private/initialize.php');
+require_login(); 
 
 //make sure subject has an id
 if (!isset($_GET['id'])) {
