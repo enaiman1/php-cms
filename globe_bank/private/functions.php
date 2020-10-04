@@ -65,5 +65,22 @@ function display_errors($errors=array()) {
   return $output;
 }
 
+function get_and_clear_message() {
+  if(isset($_SESSION['message']) && $_SESSION['message'] != ''){
+    $msg = $_SESSION['message'];
+    unset($_SESSION['message']);
+    return $msg;
+  }
+}
+
+
+function display_session_message(){
+  $msg = get_and_clear_message();
+
+  if(!is_blank($msg)){
+    return '<Div id="message">' . h($msg) . '</div>';
+  }
+}
+
 
 ?>

@@ -3,13 +3,13 @@
 require_once('../../../private/initialize.php');
 
 //make sure subject has an id
-if(!isset($_GET['id'])) {
+if (!isset($_GET['id'])) {
   redirect_to(url_for('/staff/subjects/index.php'));
 }
 $id = $_GET['id'];
 
 
-if(is_post_request()) {
+if (is_post_request()) {
 
   // Handle form values sent by new.php
 
@@ -22,13 +22,13 @@ if(is_post_request()) {
 
 
   $result = update_subject($subject);
-  if($result === true) {
+  if ($result === true) {
+    $_SESSION['messgae'] = 'The subject was updated successfully.';
     redirect_to(url_for('/staff/subjects/show.php?id=' . $id));
   } else {
     $errors = $result;
     // var_dump($errors);
   }
- 
 } else {
   $subject = find_subject_by_id($id);
 }
@@ -47,7 +47,7 @@ mysqli_free_result($subject_set);
   <div class="subject edit">
     <h1>Edit Subject</h1>
 
-    <?= display_errors($errors);?>
+    <?= display_errors($errors); ?>
     <form action="<?= url_for('/staff/subjects/edit.php?id=' . h(u($id))); ?>" method="post">
       <dl>
         <dt>Menu Name</dt>
@@ -57,15 +57,15 @@ mysqli_free_result($subject_set);
         <dt>Position</dt>
         <dd>
           <select name="position">
-          <?php
-            for($i=1; $i <= $subject_count; $i++) {
+            <?php
+            for ($i = 1; $i <= $subject_count; $i++) {
               echo "<option value=\"{$i}\"";
-              if($subject["position"] == $i) {
+              if ($subject["position"] == $i) {
                 echo " selected";
               }
               echo ">{$i}</option>";
             }
-          ?>
+            ?>
           </select>
         </dd>
       </dl>
@@ -73,7 +73,9 @@ mysqli_free_result($subject_set);
         <dt>Visible</dt>
         <dd>
           <input type="hidden" name="visible" value="0" />
-          <input type="checkbox" name="visible" value="1"<?php if($subject['visible'] == "1") { echo " checked"; } ?> />
+          <input type="checkbox" name="visible" value="1" <?php if ($subject['visible'] == "1") {
+                                                            echo " checked";
+                                                          } ?> />
         </dd>
       </dl>
       <div id="operations">
