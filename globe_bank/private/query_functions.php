@@ -334,7 +334,9 @@ function find_pages_by_subject_id($subject_id, $options=[]) {
 
 // This function will validate the forms for creating and updating subject
 //It will take an associate array for subject and adds the error info at the end
-function validate_admin($admin) {
+function validate_admin($admin, $options=[]) {
+
+  $password_required = $options['password_required'] ?? true;
 
   //validates first name
   if(is_blank($admin['first_name'])) {
@@ -365,8 +367,10 @@ function validate_admin($admin) {
     $errors[] = "Username not allowed. Try another.";
   }
 
+  
   //validate password and make sure it meets the requirements of the password
   // *preg_match = Perl regex
+  if($password_required){
   if(is_blank($admin['password'])) {
     $errors[] = "Password cannot be blank.";
   } elseif (!has_length($admin['password'], array('min' => 12))) {
@@ -386,7 +390,7 @@ function validate_admin($admin) {
   } elseif ($admin['password'] !== $admin['confirm_password']) {
     $errors[] = "Password and confirm password must match.";
   }
-
+}
   return $errors;
 }
 
@@ -469,7 +473,10 @@ function insert_admin($admin){
 function update_admin($admin){
   global $db;
 
-  $errors = validate_admin($admin);
+  $password_sent = !is_blank($admin['password']);
+
+
+  $errors = validate_admin($admin, ['password_required' => $password_sent]);
   if (!empty($errors)) {
     return $errors;
   }
@@ -480,7 +487,11 @@ function update_admin($admin){
   $sql .= "first_name='" . db_escape($db, $admin['first_name']) . "', ";
   $sql .= "last_name='" . db_escape($db, $admin['last_name']) . "', ";
   $sql .= "email='" . db_escape($db, $admin['email']) . "', ";
-  $sql .= "hashed_password='" . db_escape($db, $hashed_password) . "',";
+
+  if($password_sent){
+    $sql .= "hashed_password='" . db_escape($db, $hashed_password) . "',";
+  }
+  
   $sql .= "username='" . db_escape($db, $admin['username']) . "' ";
   $sql .= "WHERE id='" . db_escape($db, $admin['id']) . "' ";
   $sql .= "LIMIT 1";
@@ -515,4 +526,3 @@ function delete_admin($admin){
       exit;
     }
 }
-?>

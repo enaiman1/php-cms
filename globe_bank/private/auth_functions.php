@@ -12,6 +12,16 @@
     return true;
   }
 
+
+  //Will log out an admin
+  Function log_out_admin(){
+    unset($_SESSION['admin_id']);
+    unset($_SESSION['last_login']);
+    unset($_SESSION['username']);
+    // session_destory(); // optional: destors the whole session
+    return true;
+  }
+
   // is_logged_in() contains all the logic for determining if a
 // request should be considered a "logged in" request or not.
 // It is the core of require_login() but it can also be called
